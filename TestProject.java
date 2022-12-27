@@ -37,6 +37,11 @@ class arraylists{
     static ArrayList<String> phoneList = new ArrayList<>();
 }
 
+class vectors{
+    static Vector<Vector> rowData = new Vector<Vector>();
+}
+
+
 class submitButton implements ActionListener{
     JTextField tf1, tf2;
     
@@ -58,8 +63,19 @@ class submitButton implements ActionListener{
         else{
             JOptionPane.showMessageDialog(j, "Thank you " + name + ". You are Successfully addedd");
             
-            arraylists.nameList.add(name); // add name into the arraylist nameList
-            arraylists.phoneList.add(phone); // add phone into the arrayList phoneList
+            //arraylists.nameList.add(name); // add name into the arraylist nameList
+            //arraylists.phoneList.add(phone); // add phone into the arrayList phoneList
+            
+            //for(int i=0; i<arraylists.phoneList.size(); i++){
+            
+            Vector<String> rowOne = new Vector<String>(); // the registered data directly inserted into rowData vector
+            //rowOne.clear();
+            rowOne.addElement(name);
+            rowOne.addElement(phone);
+            vectors.rowData.addElement(rowOne);
+
+        //}
+            
             
             tf1.setText("");
             tf2.setText("");
@@ -124,9 +140,7 @@ class registrationButton implements ActionListener{
     }
 }
 
-class vectors{
-    static Vector<Vector> rowData = new Vector<Vector>();
-}
+
 
 class listButtonPerform implements ActionListener{
     public listButtonPerform(JButton b) {
@@ -140,7 +154,7 @@ class listButtonPerform implements ActionListener{
         columnNames.addElement("Name");
         columnNames.addElement("Cell");
     
-        if(arraylists.phoneList.size() == 0 || arraylists.nameList.size() == 0){
+        if(vectors.rowData.size() == 0){
             JLabel l = new JLabel();
             l.setText("     No Records Found!"   );
             //l.setBounds(200, 100, 100, 100);
@@ -148,18 +162,25 @@ class listButtonPerform implements ActionListener{
         }
     
         else {
-            for(int i=0; i<arraylists.phoneList.size(); i++){
-            Vector<String> rowOne = new Vector<String>();
+            //for(int i=0; i<arraylists.phoneList.size(); i++){
+            //Vector<String> rowOne = new Vector<String>();
             //rowOne.clear();
-            rowOne.addElement(arraylists.nameList.get(i));
-            rowOne.addElement(arraylists.phoneList.get(i));
-            vectors.rowData.addElement(rowOne);
-            JTable table = new JTable(vectors.rowData, columnNames);
+            //rowOne.addElement(arraylists.nameList.get(i));
+            //rowOne.addElement(arraylists.phoneList.get(i));
+            //vectors.rowData.addElement(rowOne);
+            //JTable table = new JTable(vectors.rowData, columnNames);
             //rowOne.clear();
-            JScrollPane scrollPane = new JScrollPane(table);
-            frame.add(scrollPane, BorderLayout.CENTER);
+            //JScrollPane scrollPane = new JScrollPane(table);
+            //frame.add(scrollPane, BorderLayout.CENTER);
+            
+            for(int i=0; i<vectors.rowData.size(); i++){
+                JTable table = new JTable(vectors.rowData, columnNames);
+                //rowOne.clear();
+                JScrollPane scrollPane = new JScrollPane(table);
+                frame.add(scrollPane, BorderLayout.CENTER);
+            }
 
-        }
+        //}
     }
         frame.setSize(300, 300);
         frame.setVisible(true);
@@ -202,9 +223,7 @@ class machineButtonPerform implements ActionListener{
         window machineFrame = new window();
         machineFrame.makeFrame("The Machine", true, false);
         
-       
-        
-        int min = 0, max = arraylists.phoneList.size();
+        int min = 0, max = vectors.rowData.size();
         
         if(max == 0){
             JLabel l = new JLabel("No records");
@@ -218,9 +237,22 @@ class machineButtonPerform implements ActionListener{
             winner.setBounds(120, 80, 200, 100);
             Random rand = new Random();
             int randnum = rand.nextInt((max - min) + 1) + min;
-            System.out.println(randnum);
+            //System.out.println(vectors.rowData.get(randnum));
+            String member_name = (String)vectors.rowData.get(randnum).get(0);
+            String member_phone = (String)vectors.rowData.get(randnum).get(1);
+            
+            JLabel memberName = new JLabel(member_name);
+            memberName.setBounds(120, 120, 200, 100);
+            
+            JLabel memberPhone = new JLabel(member_phone);
+            memberPhone.setBounds(200, 120, 200, 100);
+            
+            
+            vectors.rowData.remove(randnum);
         
             machineFrame.frame.add(winner);
+            machineFrame.frame.add(memberName);
+            machineFrame.frame.add(memberPhone);
         }
         
         
